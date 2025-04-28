@@ -4,13 +4,13 @@ class Controller(Fmi2Slave):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # Regulatorparametere med defaultverdier
+        # Regulatorparametere
         self.k1 = -1.0
         self.k2 = -2.0
         self.k3 = -30.0
         self.k4 = -10.0
 
-        # Input-signaler
+        # Input signaler
         self.theta = 0.0
         self.omega = 0.0
         self.x = 0.0
@@ -19,7 +19,7 @@ class Controller(Fmi2Slave):
         # Output-signal
         self.force = 0.0
 
-        # Registrer parametere slik at de kan settes utenfra (f.eks. i Ecos)
+        # Registrer parametere
         self.register_variable(Real("k1", causality=Fmi2Causality.parameter))
         self.register_variable(Real("k2", causality=Fmi2Causality.parameter))
         self.register_variable(Real("k3", causality=Fmi2Causality.parameter))
@@ -35,7 +35,6 @@ class Controller(Fmi2Slave):
         self.register_variable(Real("force", causality=Fmi2Causality.output))
 
     def do_step(self, t, dt):
-    # Bruk riktig fortegn: F = -k1θ -k2ω -k3x -k4x_dot
         self.force = -(
         self.k1 * self.theta +
         self.k2 * self.omega +
